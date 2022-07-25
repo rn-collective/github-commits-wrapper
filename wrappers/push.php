@@ -10,10 +10,12 @@
 	$payload = file_get_contents('php://input');
 	$hash = hash_hmac('sha256', $payload, $secret);
 
-	file_put_contents('push_payload', $payload);
-
 	$data = json_decode($payload, true);
 	$commits_array = array();
+
+	if ($data['commits'] <= 0) {
+		exit;
+	}
 
 	foreach ($data['commits'] as $commit => $value) {
 		$is_confidential = substr($value['message'], 0, 1) == '!';
