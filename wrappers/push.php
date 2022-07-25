@@ -15,14 +15,14 @@
 
 	foreach ($data['commits'] as $commit => $value) {
 		$is_confidential = substr($value['message'], 0, 1) == '!';
-		$message = $value['message']
+		$message = $value['message'];
 		if ($is_confidential) {
-			$message = ':detective: confidential commit'
+			$message = ':detective: confidential commit';
 		}
 
 		$commit_array = [
 			"name" => sprintf('%s `%s` +%d -%d ~%d', $value['author']['name'], substr($value['id'], 0, 7), count($value['added']), count($value['removed']), count($value['modified']) ),
-			"value" => $value['message'],
+			"value" => $message,
 			"inline" => false
 		];
 
