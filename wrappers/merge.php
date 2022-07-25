@@ -20,7 +20,7 @@
 	            "description" => '',
 	            "url" => $data['pull_request']['url'],
 	            "timestamp" => date('c', strtotime('now')),
-	            "color" => hexdec('2f3136'),
+	            "color" => hexdec('009800'),
 	            "footer" => [
 	                "text" => $data['sender']['login'],
 	                "icon_url" => $data['sender']['avatar_url']
