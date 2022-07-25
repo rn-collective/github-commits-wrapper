@@ -33,7 +33,7 @@
 	            	]
 	            ],
 	            "thumbnail" => [
-	            	"url" => "https://i.imgur.com/Fq9pSRd.png"
+	            	"url" => "https://i.imgur.com/yCZeuXq.png"
 	            ]
 	        ]
 	    ]
