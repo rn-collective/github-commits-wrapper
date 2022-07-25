@@ -11,28 +11,36 @@
 	$payload = file_get_contents('php://input');
 	$hash = hash_hmac('sha256', $payload, $secret);
 
-	$data = json_decode($payload);
+	$data = json_decode($payload, true);
+
+	$commits_array = array();
+
+	foreach ($data['commits'] as $commit => $value) {
+		// code...
+	}
 
 	$embed = json_encode([
 	    "embeds" => [
 	        [
-	            "title" => $data['repository']['name'],
 	            "type" => "rich",
-	            "description" =>  sprintf('Новые коммиты в %s', $data['ref']),
+	            "title" => sprintf('🗂 %s ~ %s', $data['repository']['name'], $data['ref']) ,
+	            "description" => '',
 	            "url" => $data['head_commit']['url'],
 	            "timestamp" => date('c', strtotime('now')),
-	            "color" => hexdec('fd7a61'),
+	            "color" => hexdec('2f3136'),
 	            "footer" => [
 	                "text" => $data['sender']['login'],
 	                "icon_url" => $data['sender']['avatar_url']
 	            ],
 	            "fields" => [
 	                [
-	                    "name" => "Field #1 Name",
-	                    "value" => "Field #1 Value",
+	                    "name" => "Bilwin `7b0b715` +6 ~2 -2",
+	                    "value" => ":package: config & push curls",
 	                    "inline" => false
 	                ]
 	            ]
+
+	            "fields" => $commits_array
 	        ]
 	    ]
 	], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
