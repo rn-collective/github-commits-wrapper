@@ -12,11 +12,16 @@
 	$hash = hash_hmac('sha256', $payload, $secret);
 
 	$data = json_decode($payload, true);
-
 	$commits_array = array();
 
 	foreach ($data['commits'] as $commit => $value) {
-		// code...
+		$commit_array = [
+			"name" => sprintf('%s `%s` +%d -%d ~%d', $value['author']['name'], substr($value['id'], 0, 7), count($value['added']), count($value['removed']), count($value['modified']) ),
+			"value" => $value['message'],
+			"inline" => false
+		];
+
+		array_push($commits_array, $commit_array);
 	}
 
 	$embed = json_encode([
@@ -32,14 +37,6 @@
 	                "text" => $data['sender']['login'],
 	                "icon_url" => $data['sender']['avatar_url']
 	            ],
-	            "fields" => [
-	                [
-	                    "name" => "Bilwin `7b0b715` +6 ~2 -2",
-	                    "value" => ":package: config & push curls",
-	                    "inline" => false
-	                ]
-	            ]
-
 	            "fields" => $commits_array
 	        ]
 	    ]
