@@ -8,7 +8,7 @@
 
 	$data = json_decode($payload, true);
 
-	if ($data['action'] != 'closed' && $data['action'] != 'labeled') {
+	if ($data['action'] != 'closed' && $data['action'] != 'opened') {
 		exit;
 	}
 
