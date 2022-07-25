@@ -2,17 +2,17 @@
 	include_once('../config.php');
 	include_once('../webhook.php');
 
-	//if ($secret !== $himac) {
-	//	exit;
-	//};
-
 	$signature = $_SERVER['HTTP_X_HUB_SIGNATURE_256'];
 	$payload = file_get_contents('php://input');
 	$hash = hash_hmac('sha256', $payload, $secret);
+	$hash = 'sha256=' . $hash;
+
+	if ($hash !== $signature) {
+		exit;
+	}
 
 	$data = json_decode($payload, true);
 	$commits_array = array();
-
 	if (count($data['commits']) <= 0) {
 		exit;
 	}
