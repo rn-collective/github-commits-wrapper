@@ -6,18 +6,48 @@
 	$payload = file_get_contents('php://input');
 	$hash = hash_hmac('sha256', $payload, $secret);
 
-	// https://i.imgur.com/Fq9pSRd.png
+	$data = json_decode($payload, true);
+	$commits_array = array();
 
-	file_put_contents('merge_payload', $payload);
+	if ($data['action'] != 'closed' && $data['action'] != 'labeled') {
+		exit;
+	}
 
-	//$curl = curl_init( $webhook );
-	//curl_setopt( $curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
-	//curl_setopt( $curl, CURLOPT_POST, 1);
-	//curl_setopt( $curl, CURLOPT_POSTFIELDS, $embed);
-	//curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, 1);
-	//curl_setopt( $curl, CURLOPT_HEADER, 0);
-	//curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+	$embed = json_encode([
+	    "embeds" => [
+	        [
+	            "type" => "rich",
+	            "title" => sprintf('🗂 %s ~ %s → %s', $data['head']['ref'], $data['base']['ref']) ,
+	            "description" => '',
+	            "url" => $data['pull_request']['url'],
+	            "timestamp" => date('c', strtotime('now')),
+	            "color" => hexdec('2f3136'),
+	            "footer" => [
+	                "text" => $data['sender']['login'],
+	                "icon_url" => $data['sender']['avatar_url']
+	            ],
+	            "fields" => [
+	            	[
+	            		"name" => sprintf('Merge request №%d %s', $data['pull_request']['number'], $data['action']),
+	            		"value" => $data['pull_request']['title'],
+	            		"inline" => false
+	            	]
+	            ],
+	            "thumbnail" => [
+	            	"url" => "https://i.imgur.com/Fq9pSRd.png"
+	            ]
+	        ]
+	    ]
+	], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 
-	//$response = curl_exec( $curl );
-	//curl_close( $curl )
+	$curl = curl_init( $webhook );
+	curl_setopt( $curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+	curl_setopt( $curl, CURLOPT_POST, 1);
+	curl_setopt( $curl, CURLOPT_POSTFIELDS, $embed);
+	curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, 1);
+	curl_setopt( $curl, CURLOPT_HEADER, 0);
+	curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+
+	$response = curl_exec( $curl );
+	curl_close( $curl )
 ?>
