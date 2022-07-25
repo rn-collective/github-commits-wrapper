@@ -13,7 +13,7 @@
 	$data = json_decode($payload, true);
 	$commits_array = array();
 
-	if ($data['commits'] <= 0) {
+	if (count($data['commits']) <= 0) {
 		exit;
 	}
 
