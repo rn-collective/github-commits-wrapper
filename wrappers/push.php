@@ -48,7 +48,7 @@
 	            ],
 	            "fields" => $commits_array,
 	            "thumbnail" => [
-	            	"url" => "https://i.imgur.com/liY0Pk6.png"
+	            	"url" => "https://i.imgur.com/HvMRwKU.png"
 	            ]
 	        ]
 	    ]
