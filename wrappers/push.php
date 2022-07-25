@@ -21,7 +21,7 @@
 		}
 
 		$commit_array = [
-			"name" => sprintf('%s `%s` +%d -%d ~%d', $value['author']['name'], substr($value['id'], 0, 7), count($value['added']), count($value['removed']), count($value['modified']) ),
+			"name" => sprintf('%s `%s` `+%d` `-%d` `~%d`', $value['author']['name'], substr($value['id'], 0, 7), count($value['added']), count($value['removed']), count($value['modified']) ),
 			"value" => $message,
 			"inline" => false
 		];
@@ -42,7 +42,10 @@
 	                "text" => $data['sender']['login'],
 	                "icon_url" => $data['sender']['avatar_url']
 	            ],
-	            "fields" => $commits_array
+	            "fields" => $commits_array,
+	            "thumbnail" => [
+	            	"url" => "https://i.imgur.com/liY0Pk6.png"
+	            ]
 	        ]
 	    ]
 	], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
