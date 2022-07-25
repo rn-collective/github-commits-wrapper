@@ -6,7 +6,6 @@
 	//	exit;
 	//};
 
-	// signature checks
 	$signature = $_SERVER['HTTP_X_HUB_SIGNATURE_256'];
 	$payload = file_get_contents('php://input');
 	$hash = hash_hmac('sha256', $payload, $secret);
@@ -15,6 +14,12 @@
 	$commits_array = array();
 
 	foreach ($data['commits'] as $commit => $value) {
+		$is_confidential = substr($value['message'], 0, 1) == '!';
+		$message = $value['message']
+		if ($is_confidential) {
+			$message = ':detective: confidential commit'
+		}
+
 		$commit_array = [
 			"name" => sprintf('%s `%s` +%d -%d ~%d', $value['author']['name'], substr($value['id'], 0, 7), count($value['added']), count($value['removed']), count($value['modified']) ),
 			"value" => $value['message'],
