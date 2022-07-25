@@ -41,7 +41,7 @@
 	            "description" => '',
 	            "url" => $data['head_commit']['url'],
 	            "timestamp" => date('c', strtotime('now')),
-	            "color" => hexdec('2f3136'),
+	            "color" => hexdec('7289da'),
 	            "footer" => [
 	                "text" => $data['sender']['login'],
 	                "icon_url" => $data['sender']['avatar_url']
