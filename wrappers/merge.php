@@ -7,7 +7,6 @@
 	$hash = hash_hmac('sha256', $payload, $secret);
 
 	$data = json_decode($payload, true);
-	$commits_array = array();
 
 	if ($data['action'] != 'closed' && $data['action'] != 'labeled') {
 		exit;
@@ -17,7 +16,7 @@
 	    "embeds" => [
 	        [
 	            "type" => "rich",
-	            "title" => sprintf('🗂 %s ~ %s → %s', $data['head']['ref'], $data['base']['ref']) ,
+	            "title" => sprintf('🗂 %s ~ %s → %s', $data['repository']['name'], $data['head']['ref'], $data['base']['ref']),
 	            "description" => '',
 	            "url" => $data['pull_request']['url'],
 	            "timestamp" => date('c', strtotime('now')),
