@@ -25,21 +25,21 @@
 		}
 
 		$changed = '';
+
 		if (count($value['added']) > 0) {
-			$changed = $changed . ' `+' . $value['added'] . '`';
+			$changed .= ' `+' . count($value['added']) . '`';
 		}
 
 		if (count($value['removed']) > 0) {
-			$changed = $changed . ' `-' . $value['removed'] . '`';
+			$changed .= ' `-' . count($value['removed']) . '`';
 		}
 
 		if (count($value['modified']) > 0) {
-			$changed = $changed . ' `~' . $value['modified'] . '`';
+			$changed .= ' `~' . count($value['modified']) . '`';
 		}
-		$changed = trim($changed);
 
 		$commit_array = [
-			"name" => sprintf('%s `%s` %s', $value['author']['name'], substr($value['id'], 0, 7), $changed),
+			"name" => sprintf('%s `%s` %s', $value['author']['name'], substr($value['id'], 0, 7), trim($changed)),
 			"value" => sprintf('[%s](%s)', $message, $value['url']),
 			"inline" => false
 		];
