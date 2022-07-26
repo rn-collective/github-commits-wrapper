@@ -22,7 +22,7 @@
 	            "type" => "rich",
 	            "title" => sprintf('🗂 %s ~ %s → %s', $data['repository']['name'], $data['pull_request']['head']['ref'], $data['pull_request']['base']['ref']),
 	            "description" => '',
-	            "url" => $data['pull_request']['url'],
+	            "url" => $data['pull_request']['html_url'],
 	            "timestamp" => date('c', strtotime('now')),
 	            "color" => hexdec('009800'),
 	            "footer" => [
