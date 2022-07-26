@@ -24,9 +24,23 @@
 			$message = ':detective: confidential commit';
 		}
 
+		$changed = '';
+		if (count($value['added']) > 0) {
+			$changed = $changed . ' `+' . $value['added'] . '`';
+		}
+
+		if (count($value['removed']) > 0) {
+			$changed = $changed . ' `-' . $value['removed'] . '`';
+		}
+
+		if (count($value['modified']) > 0) {
+			$changed = $changed . ' `~' . $value['modified'] . '`';
+		}
+		$changed = trim($changed);
+
 		$commit_array = [
-			"name" => sprintf('%s `%s` `+%d` `-%d` `~%d`', $value['author']['name'], substr($value['id'], 0, 7), count($value['added']), count($value['removed']), count($value['modified']) ),
-			"value" => $message,
+			"name" => sprintf('%s `%s` %s', $value['author']['name'], substr($value['id'], 0, 7), $changed),
+			"value" => sprintf('[%s](%s)', $message, $value['url']),
 			"inline" => false
 		];
 
@@ -39,7 +53,7 @@
 	            "type" => "rich",
 	            "title" => sprintf('🗂 %s ~ %s', $data['repository']['name'], $data['ref']) ,
 	            "description" => '',
-	            "url" => $data['head_commit']['url'],
+	            "url" => $data['repository']['html_url'],
 	            "timestamp" => date('c', strtotime('now')),
 	            "color" => hexdec('7289da'),
 	            "footer" => [
