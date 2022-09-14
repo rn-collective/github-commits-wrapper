@@ -17,27 +17,27 @@
 	}
 
 	$embed = json_encode([
-	    "embeds" => [
+	    'embeds' => [
 	        [
-	            "type" => "rich",
-	            "title" => sprintf('🗂 %s ~ %s → %s', $data['repository']['name'], $data['pull_request']['head']['ref'], $data['pull_request']['base']['ref']),
-	            "description" => '',
-	            "url" => $data['pull_request']['html_url'],
-	            "timestamp" => date('c', strtotime('now')),
-	            "color" => hexdec('009800'),
-	            "footer" => [
-	                "text" => $data['sender']['login'],
-	                "icon_url" => $data['sender']['avatar_url']
+	            'type' => 'rich',
+	            'title' => sprintf('🗂 %s ~ %s → %s', $data['repository']['name'], $data['pull_request']['head']['ref'], $data['pull_request']['base']['ref']),
+	            'description' => '',
+	            'url' => $data['pull_request']['html_url'],
+	            'timestamp' => date('c', strtotime('now')),
+	            'color' => hexdec('009800'),
+	            'footer' => [
+	                'text' => $data['sender']['login'],
+	                'icon_url' => $data['sender']['avatar_url']
 	            ],
-	            "fields" => [
+	            'fields' => [
 	            	[
-	            		"name" => sprintf('Merge request №%d %s', $data['pull_request']['number'], $data['action']),
-	            		"value" => $data['pull_request']['title'],
-	            		"inline" => false
+	            		'name' => sprintf('Merge request №%d %s', $data['pull_request']['number'], $data['action']),
+	            		'value' => $data['pull_request']['title'],
+	            		'inline' => false
 	            	]
 	            ],
-	            "thumbnail" => [
-	            	"url" => "https://i.imgur.com/yCZeuXq.png"
+	            'thumbnail' => [
+	            	'url' => 'https://i.imgur.com/yCZeuXq.png'
 	            ]
 	        ]
 	    ]

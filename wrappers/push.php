@@ -39,30 +39,30 @@
 		}
 
 		$commit_array = [
-			"name" => sprintf('%s `%s` %s', $value['author']['name'], substr($value['id'], 0, 7), trim($changed)),
-			"value" => sprintf('[%s](%s)', $message, $value['url']),
-			"inline" => false
+			'name' => sprintf('%s `%s` %s', $value['author']['name'], substr($value['id'], 0, 7), trim($changed)),
+			'value' => sprintf('[%s](%s)', $message, $value['url']),
+			'inline' => false
 		];
 
 		array_push($commits_array, $commit_array);
 	}
 
 	$embed = json_encode([
-	    "embeds" => [
+	    'embeds' => [
 	        [
-	            "type" => "rich",
-	            "title" => sprintf('🗂 %s ~ %s', $data['repository']['name'], $data['ref']) ,
-	            "description" => '',
-	            "url" => $data['repository']['html_url'],
-	            "timestamp" => date('c', strtotime('now')),
-	            "color" => hexdec('7289da'),
-	            "footer" => [
-	                "text" => $data['sender']['login'],
-	                "icon_url" => $data['sender']['avatar_url']
+	            'type' => 'rich',
+	            'title' => sprintf('🗂 %s ~ %s', $data['repository']['name'], $data['ref']) ,
+	            'description' => '',
+	            'url' => $data['repository']['html_url'],
+	            'timestamp' => date('c', strtotime('now')),
+	            'color' => hexdec('7289da'),
+	            'footer' => [
+	                'text' => $data['sender']['login'],
+	                'icon_url' => $data['sender']['avatar_url']
 	            ],
-	            "fields" => $commits_array,
-	            "thumbnail" => [
-	            	"url" => "https://i.imgur.com/HvMRwKU.png"
+	            'fields' => $commits_array,
+	            'thumbnail' => [
+	            	'url' => 'https://i.imgur.com/HvMRwKU.png'
 	            ]
 	        ]
 	    ]
