@@ -1,6 +1,5 @@
 <?php
 	include_once('../config.php');
-	include_once('../webhook.php');
 
 	$signature = $_SERVER['HTTP_X_HUB_SIGNATURE_256'];
 	$payload = file_get_contents('php://input');
