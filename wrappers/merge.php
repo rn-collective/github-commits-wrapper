@@ -15,6 +15,12 @@
 		exit;
 	}
 
+    $title = $data['pull_request']['title'];
+    $is_confidential = substr($title, 0, 1) == '!';
+    if ($is_confidential) {
+        $title = ':detective: confidential pull request';
+    }
+
 	$embed = json_encode([
 	    'embeds' => [
 	        [
@@ -31,7 +37,7 @@
 	            'fields' => [
 	            	[
 	            		'name' => sprintf('Merge request №%d %s', $data['pull_request']['number'], $data['action']),
-	            		'value' => $data['pull_request']['title'],
+	            		'value' => $title,
 	            		'inline' => false
 	            	]
 	            ],
