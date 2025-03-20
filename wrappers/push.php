@@ -33,10 +33,10 @@
 		} else {
 			$first_line = explode("\n", $message)[0];
 		}
-		$commit_list .= "**[$commit_id](<$commit_url>)** $first_line\n";
+		$commit_list .= "[`$commit_id`](<$commit_url>) $first_line\n";
 	}
 
-	$commit_list .= "- **[$author](<$author_url>)** on **[$repo](<$repo_url>) / [$branch](<$branch_url>)**";
+	$commit_list .= "- [$author](<$author_url>) on [`$repo`](<$repo_url>)`/`[`$branch`](<$branch_url>)";
 
 	$content = $commit_list;
 
