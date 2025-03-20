@@ -24,7 +24,10 @@
 	$url = $data['pull_request']['html_url'];
 	$action = $data['action'];
 
-	$content = "PR: [$title](<$url>) ($action)";
+	$source_branch = $data['pull_request']['head']['ref'];
+	$target_branch = $data['pull_request']['base']['ref'];
+
+	$content = "PR: **[$title](<$url>)** ($action) **$source_branch → $target_branch**";
 
 	$payload = json_encode([
 		"username" => $author,

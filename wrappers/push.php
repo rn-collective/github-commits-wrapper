@@ -16,23 +16,29 @@
 	}
 
 	$author = $data['sender']['login'];
+	$author_url = $data['sender']['html_url'];
 	$avatar_url = $data['sender']['avatar_url'];
 	$repo = $data['repository']['full_name'];
+	$repo_url = $data['repository']['html_url'];
 	$branch = explode('/', $data['ref'])[2];
 	$branch_url = "https://github.com/$repo/tree/$branch";
 
 	$commit_list = "";
 	foreach ($data['commits'] as $commit) {
+		$commit_id = substr($commit['id'], 0, 7);
+		$commit_url = $commit['url'];
 		$message = $commit['message'];
 		if (substr($message, 0, 1) == '!') {
 			$first_line = ':detective: confidential commit';
 		} else {
 			$first_line = explode("\n", $message)[0];
 		}
-		$commit_list .= "- $first_line\n";
+		$commit_list .= "**[$commit_id](<$commit_url>)** $first_line\n";
 	}
 
-	$content = "[$author on $repo:$branch](<$branch_url>)\n\n$commit_list";
+	$commit_list .= "- **[$author](<$author_url>)** on **[$repo](<$repo_url>) / [$branch](<$branch_url>)**";
+
+	$content = $commit_list;
 
 	$payload = json_encode([
 		"username" => $author,
