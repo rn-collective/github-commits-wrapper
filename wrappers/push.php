@@ -11,70 +11,43 @@
 	}
 
 	$data = json_decode($payload, true);
-	$commits_array = array();
 	if (count($data['commits']) <= 0) {
 		exit;
 	}
 
-	foreach ($data['commits'] as $commit => $value) {
-		$is_confidential = substr($value['message'], 0, 1) == '!';
-		$message = $value['message'];
-		if ($is_confidential) {
-			$message = ':detective: confidential commit';
+	$author = $data['sender']['login'];
+	$avatar_url = $data['sender']['avatar_url'];
+	$repo = $data['repository']['full_name'];
+	$branch = explode('/', $data['ref'])[2];
+	$branch_url = "https://github.com/$repo/tree/$branch";
+
+	$commit_list = "";
+	foreach ($data['commits'] as $commit) {
+		$message = $commit['message'];
+		if (substr($message, 0, 1) == '!') {
+			$first_line = ':detective: confidential commit';
+		} else {
+			$first_line = explode("\n", $message)[0];
 		}
-
-		$changed = '';
-
-		if (count($value['added']) > 0) {
-			$changed .= ' `+' . count($value['added']) . '`';
-		}
-
-		if (count($value['removed']) > 0) {
-			$changed .= ' `-' . count($value['removed']) . '`';
-		}
-
-		if (count($value['modified']) > 0) {
-			$changed .= ' `~' . count($value['modified']) . '`';
-		}
-
-		$commit_array = [
-			'name' => sprintf('%s `%s` %s', $value['author']['name'], substr($value['id'], 0, 7), trim($changed)),
-			'value' => sprintf('[%s](%s)', $message, $value['url']),
-			'inline' => false
-		];
-
-		array_push($commits_array, $commit_array);
+		$commit_list .= "- $first_line\n";
 	}
 
-	$embed = json_encode([
-	    'embeds' => [
-	        [
-	            'type' => 'rich',
-	            'title' => sprintf('🗂 %s ~ %s', $data['repository']['name'], $data['ref']) ,
-	            'description' => '',
-	            'url' => $data['repository']['html_url'],
-	            'timestamp' => date('c', strtotime('now')),
-	            'color' => hexdec('7289da'),
-	            'footer' => [
-	                'text' => $data['sender']['login'],
-	                'icon_url' => $data['sender']['avatar_url']
-	            ],
-	            'fields' => $commits_array,
-	            'thumbnail' => [
-	            	'url' => 'https://i.imgur.com/HvMRwKU.png'
-	            ]
-	        ]
-	    ]
-	], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+	$content = "[$author on $repo:$branch]($branch_url)\n\n$commit_list";
 
-	$curl = curl_init( $webhook );
-	curl_setopt( $curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
-	curl_setopt( $curl, CURLOPT_POST, 1);
-	curl_setopt( $curl, CURLOPT_POSTFIELDS, $embed);
-	curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, 1);
-	curl_setopt( $curl, CURLOPT_HEADER, 0);
-	curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+	$payload = json_encode([
+		"username" => $author,
+		"avatar_url" => $avatar_url,
+		"content" => $content
+	], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
-	$response = curl_exec( $curl );
-	curl_close( $curl )
+	$curl = curl_init($webhook);
+	curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+	curl_setopt($curl, CURLOPT_POST, 1);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, $payload);
+	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+	curl_setopt($curl, CURLOPT_HEADER, 0);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+	$response = curl_exec($curl);
+	curl_close($curl);
 ?>
