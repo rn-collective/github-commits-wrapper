@@ -24,7 +24,7 @@
 	$url = $data['pull_request']['html_url'];
 	$action = $data['action'];
 
-	$content = "PR: [$title]($url) ($action)";
+	$content = "PR: [$title](<$url>) ($action)";
 
 	$payload = json_encode([
 		"username" => $author,

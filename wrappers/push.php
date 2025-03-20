@@ -32,7 +32,7 @@
 		$commit_list .= "- $first_line\n";
 	}
 
-	$content = "[$author on $repo:$branch]($branch_url)\n\n$commit_list";
+	$content = "[$author on $repo:$branch](<$branch_url>)\n\n$commit_list";
 
 	$payload = json_encode([
 		"username" => $author,
